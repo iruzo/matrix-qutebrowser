@@ -14,17 +14,18 @@
 - Let qutebrowser manage your themes.
   - Insert in your `config.py` the next code:
   ```python
+  import os
+  from urllib.request import urlopen
+
+  # load your autoconfig, use this, if the rest of your config is empty!
+  config.load_autoconfig()
+
   if not os.path.exists(config.configdir / "theme.py"):
-      themes = [
-              "https://raw.githubusercontent.com/iruzo/matrix-qutebrowser/main/matrix-qutebrowser.py",
-              # "another theme...",
-              ]
-      if len(themes) > 0:
-          for theme in themes:
-              with urlopen(theme) as themehtml:
-                  with open(config.configdir / "theme.py", "a") as file:
-                      file.writelines(themehtml.read().decode("utf-8"))
+      theme = "https://raw.githubusercontent.com/iruzo/matrix-qutebrowser/main/matrix-qutebrowser.py"
+      with urlopen(theme) as themehtml:
+          with open(config.configdir / "theme.py", "a") as file:
+              file.writelines(themehtml.read().decode("utf-8"))
   if os.path.exists(config.configdir / "theme.py"):
       config.source('theme.py')
   ```
-  - Remove from your `.qutebrowser` directory your current theme and reload `config.py`
+  - Remove your current theme from your `.qutebrowser` directory & reload `config.py`
